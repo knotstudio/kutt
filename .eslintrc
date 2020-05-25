@@ -6,7 +6,11 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./tsconfig.json", "./client/tsconfig.json"]
+    "project": [
+      "./apps/backend/tsconfig.json",
+      "./apps/docs/tsconfig.json",
+      "./apps/frontend/tsconfig.json"
+    ]
   },
   "plugins": ["@typescript-eslint"],
   "rules": {

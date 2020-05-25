@@ -1,0 +1,6 @@
+{
+  "watch": ["**/*.ts"],
+  "execMap": {
+    "ts": "rimraf dist && tsc --project tsconfig.json && copyfiles -f \"mail/*.html\" dist/mail && node dist/server.js"
+  }
+}
