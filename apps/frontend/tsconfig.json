@@ -19,6 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "./index.js",
     "./module.d.ts",
     "./next.config.js"
   ]

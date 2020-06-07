@@ -2,6 +2,8 @@
   "private": true,
   "name": "@knots/kutt__frontend",
   "version": "2.3.14",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "scripts": {
     "build": "next build",
     "start": "next dev"

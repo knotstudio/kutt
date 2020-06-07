@@ -1,15 +1,13 @@
 import env from "./env";
 
 import asyncHandler from "express-async-handler";
-import { sync as findUpSync } from "find-up";
+import { getApp } from "@knots/kutt__frontend";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import nextApp from "next";
 import Raven from "raven";
-import path from "path";
 
 import * as helpers from "./handlers/helpers";
 import * as links from "./handlers/links";
@@ -25,9 +23,8 @@ if (env.RAVEN_DSN) {
 }
 
 const port = env.PORT;
-const app = nextApp({
-  dir: path.resolve(path.dirname(findUpSync("package.json")), "../frontend"),
-  dev: env.isDev
+const app = getApp({
+  isDev: env.isDev
 });
 const handle = app.getRequestHandler();
 

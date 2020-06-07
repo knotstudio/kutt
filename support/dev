@@ -21,17 +21,25 @@ fatal()   { echo "[FATAL]   $@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 cleanup() {
   echo ""
   info "Exiting. Bringing docker down..."
-  cd "${TOP_DIR}/support" && docker-compose down
+  cd "${TOP_DIR}/support" && docker-compose -f "$DIR/docker-compose.yml" down
 }
 
 if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
   trap cleanup EXIT
 
   info "Starting."
-  info "Bringing docker up..."
-  cd "${TOP_DIR}/support" && docker-compose up --detach
+  if ! docker volume inspect kutt-nodemodules_root &>/dev/null || \
+     ! docker volume inspect kutt-nodemodules_backend &>/dev/null || \
+     ! docker volume inspect kutt-nodemodules_frontend &>/dev/null; then
+    info "Installing dependencies..."
 
-  info "Waiting for postgres availability..."
-  ./wait-for-it.sh tcp://localhost:54323 -- echo "[INFO]    ...Available."
-  cd "${TOP_DIR}/apps/backend" && yarn dev
+    docker volume create --name=kutt-nodemodules_root
+    docker volume create --name=kutt-nodemodules_backend
+    docker volume create --name=kutt-nodemodules_frontend
+
+    docker-compose -f "$DIR/docker-compose.builder.yml" run --rm install
+  fi;
+
+  info "Bringing docker up..."
+  cd "${TOP_DIR}/support" && docker-compose -f "$DIR/docker-compose.yml" up
 fi

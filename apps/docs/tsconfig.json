@@ -1,17 +1,15 @@
 {
-	"compilerOptions": {
-		"target": "es2018",
-		"module": "commonjs",
-		"sourceMap": false,
-		"noUnusedLocals": true,
-		"resolveJsonModule": true,
-		"esModuleInterop": true,
-		"noEmit": false,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"strict": false
-	},
-	"include": [
-		"api/*.ts"
-	]
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "sourceMap": false,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noEmit": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strict": false
+  },
+  "include": ["api/*.ts"]
 }

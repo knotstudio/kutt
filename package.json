@@ -3,18 +3,27 @@
   "name": "@knotstudio/kutt",
   "version": "2.3.14",
   "description": "Modern URL shortener.",
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "main": "./server/dist/server.js",
   "scripts": {
-    "start:backend": "./support/dev-backend",
-    "start:frontend": "./support/dev-frontend",
-    "lint": "eslint apps/* --ext .js,.ts",
-    "lint:fix": "eslint apps/* --ext .js,.ts --fix"
+    "start": "support/dev",
+    "lint": "eslint 'apps/**/*.{js,jsx,ts,tsx}'",
+    "format": "eslint 'apps/**/*.{js,jsx,ts,tsx}' --fix && prettier --write 'apps/**/*.{json,md,css}'"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run lint"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "apps/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "apps/**/*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
@@ -23,9 +32,9 @@
   "keywords": [
     "url-shortener"
   ],
-  "author": "Lochlan Bunn <bunn@lochlan.io>",
+  "author": "Pouria Ezzati <ezzati.upt@gmail.com>",
   "contributors": [
-    "Pouria Ezzati <ezzati.upt@gmail.com>"
+    "Lochlan Bunn <lochlan@knot.studio>"
   ],
   "license": "MIT",
   "bugs": {
@@ -42,7 +51,8 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.0",
-    "husky": "^0.15.0-rc.13",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.9",
     "prettier": "^1.19.1",
     "redoc": "^2.0.0-rc.20",
     "typescript": "^3.7.5"

@@ -12,6 +12,8 @@ services:
   postgres:
     image: postgres:12-alpine
     container_name: kutt-postgres
+    volumes:
+      - kutt-db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
@@ -21,6 +23,45 @@ services:
     networks:
       - kutt-network
 
+  maildev:
+    image: maildev/maildev:2.0.0-beta3
+    container_name: kutt-maildev
+    ports:
+      - "3001:1080"
+    networks:
+      - kutt-network
+
+  kutt:
+    image: node:12-alpine
+    container_name: kutt-kuttserver
+    depends_on:
+      - postgres
+      - redis
+      - maildev
+    volumes:
+      - kutt-nodemodules_root:/usr/src/kutt/node_modules
+      - kutt-nodemodules_backend:/usr/src/kutt/apps/backend/node_modules
+      - kutt-nodemodules_frontend:/usr/src/kutt/apps/frontend/node_modules
+      - ../:/usr/src/kutt:cached
+    environment:
+      NODE_ENV: development
+    working_dir: /usr/src/kutt
+    command: sh -c './support/wait-for postgres:5432 -- yarn workspace @knots/kutt__backend dev'
+    ports:
+      - "3000:3000"
+    networks:
+      - kutt-network
+
 networks:
   kutt-network:
     driver: "bridge"
+
+volumes:
+  kutt-db:
+    driver: local
+  kutt-nodemodules_root:
+    external: true
+  kutt-nodemodules_backend:
+    external: true
+  kutt-nodemodules_frontend:
+    external: true
